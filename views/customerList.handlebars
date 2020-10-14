@@ -1,0 +1,36 @@
+<div class="container">
+    <h2>顧客列表</h2>
+    <div class="row">
+        <div class="col-4">
+            <div class="list-group" id="list-tab" role="tablist">
+                {{#each customers}}
+                    <a class="list-group-item list-group-item-action" id="list-{{this._id}}-list" data-toggle="list" href="#list-{{this._id}}" role="tab">
+                        {{this.name}}
+                        <span class="badge badge-primary badge-pill">{{this.favoriteSize}}</span>
+                    </a>
+                {{/each}}
+            </div>
+        </div>
+        <div class="col-8">
+            <div class="tab-content" id="nav-tabContent">
+               {{#each customers}}
+                   <div class="tab-pane fade" id="list-{{this._id}}" role="tabpanel" aria-labelledby="list-{{this._id}}-list">
+                       {{this.favoriteStrig}}
+                       <div class="card" style="width: 18rem;">
+                           <div class="card-header">
+                               {{this.name}} 的最愛
+                           </div>
+                           <ul class="list-group list-group-flush">
+                               {{#each this.favoriteNames}}
+                               <li class="list-group-item">{{this}}</li>
+                               {{/each}}
+                           </ul>
+                       </div>
+                   </div>
+               {{/each}}
+            </div>
+        </div>
+    </div>
+</div>
+
+

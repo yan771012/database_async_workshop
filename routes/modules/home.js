@@ -18,14 +18,6 @@ router.get('/productList', (req, res) => {
     })
 
     res.render('productList', {products})
-
-
-  // Product
-  //   .find()
-  //   .lean()
-  //   .then(products => {
-  //     res.render('productList', {products})
-  //   })
 })
 
 router.get('/customerList', (req, res) => {
@@ -43,50 +35,6 @@ router.get('/customerList', (req, res) => {
       })
       res.render('customerList', {customers})
     })
-
-  // Customer
-  //   .find()
-  //   .lean()
-  //   .then(customers => {
-  //     Product
-  //       .find()
-  //       .lean()
-  //       .then(products => {
-  //         customers.forEach(customer => {
-  //           let favoriteProducts = products.filter(product => {
-  //             let pass = false
-  //             customer.favorite.forEach(productId => {
-  //               if (String(productId) === String(product._id)) {
-  //                 pass = true
-  //               }
-  //             })
-  //             return pass
-  //           })
-  //           customer.favoriteSize = favoriteProducts.length
-  //           customer.favoriteNames= favoriteProducts.map(product => product.name)
-  //         })
-  //         res.render('customerList', {customers})
-  //       })
-  //   })
-
-  // let allCustomers = []
-  // Customer
-  //   .find()
-  //   .lean()
-  //   .then(customers => {
-  //     allCustomers = customers.map(customer => {
-  //       customer.favorite = customer.favorite.map(String)
-  //       return customer
-  //     })
-  //     return Product.find().lean()
-  //   }).then(products => {
-  //   allCustomers.forEach(customer => {
-  //     let favoriteProducts = products.filter(product => customer.favorite.includes(String(product._id)))
-  //     customer.favoriteSize = favoriteProducts.length
-  //     customer.favoriteNames= favoriteProducts.map(product => product.name)
-  //   })
-  //   res.render('customerList', {customers: allCustomers})
-  // })
 })
 
 module.exports = router

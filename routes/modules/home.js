@@ -17,7 +17,7 @@ router.get('/productList', (req, res) => {
       products = ps
     })
 
-    res.render('productList', {products})
+  res.render('productList', { products })
 })
 
 router.get('/customerList', (req, res) => {
@@ -27,14 +27,28 @@ router.get('/customerList', (req, res) => {
     .then(customers => {
       customers.forEach(customer => {
         Product
-          .find({_id: {$in: customer.favorite.map(mongoose.Types.ObjectId)}})
+          //搜尋並模擬資料庫緩慢
+          .find({ _id: { $in: customer.favorite.map(mongoose.Types.ObjectId) }, $where: 'sleep(30) || true' })
           .then(products => {
             customer.favoriteSize = products.length
             customer.favoriteNames = products.map(product => product.name)
           })
       })
-      res.render('customerList', {customers})
+
+      //模擬其他資料邏輯處理
+      saveUserLog()
+        .then(() => {
+          res.render('customerList', { customers })
+        })
     })
 })
+
+function saveUserLog () {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve()
+    }, 100)
+  })
+}
 
 module.exports = router

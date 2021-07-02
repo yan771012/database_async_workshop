@@ -28,10 +28,9 @@ router.get('/customerList', (req, res) => {
       customers.forEach(customer => {
         Product
           //搜尋並模擬資料庫緩慢
-          .find({ _id: { $in: customer.favorite.map(mongoose.Types.ObjectId) }, $where: 'sleep(30) || true' })
-          .then(products => {
-            customer.favoriteSize = products.length
-            customer.favoriteNames = products.map(product => product.name)
+          .findOne({ _id: mongoose.Types.ObjectId(customer.favorite)  , $where: 'sleep(30) || true' })
+          .then(product => {
+            customer.productName = product.name
           })
       })
 
@@ -42,6 +41,40 @@ router.get('/customerList', (req, res) => {
         })
     })
 })
+
+//correct
+// router.get('/productList', (req, res) => {
+//   Product
+//     .find()
+//     .lean()
+//     .then(products => {
+//       res.render('productList', { products })
+//     })
+// })
+//
+// router.get('/customerList', (req, res) => {
+//   Customer
+//     .find()
+//     .lean()
+//     .then(customers => {
+//       Product
+//         .find()
+//         .lean()
+//         .then(products => {
+//           customers.forEach(customer => {
+//             let favoriteProduct = products.find(product => customer.favorite.equals(product._id))
+//             customer.productName = favoriteProduct.name
+//           })
+//         })
+//
+//       //模擬其他資料邏輯處理
+//       saveUserLog()
+//         .then(() => {
+//           res.render('customerList', { customers })
+//         })
+//     })
+// })
+
 
 function saveUserLog () {
   return new Promise(resolve => {

@@ -73,20 +73,6 @@ db.once('open', () => {
   }).then(() => {
     console.log(`database connection close...`)
   })
-
-
-  // for (let i = 0; i < customerRowData.length; i++) {
-  //   setTimeout(() => {
-  //     Customer.create(
-  //       customerRowData[i]
-  //     )
-  //   }, i * 500);
-  // }
-  //
-  // setTimeout(() => {
-  //   db.close()
-  //   console.log(`database connection close...`)
-  // }, customerRowData.length * 500 + 1000)
 })
 
 

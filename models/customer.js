@@ -6,8 +6,7 @@ const customerSchema = new Schema({
     required: true
   },
   favorite: {
-    type: [mongoose.Types.ObjectId],
-    default: []
+    type: mongoose.Types.ObjectId
   }
 })
 

@@ -11,11 +11,10 @@ db.once('open', () => {
         .then(products => {
           let saveProcess = []
           customers.forEach(customer => {
-            let size = Math.floor(Math.random() * 6)
-            let favoriteProducts = sample(products, size);
-            customer.favorite = favoriteProducts.map(product => product._id)
+            let index = Math.floor(Math.random() * products.length)
+            customer.favorite = products[index]._id
             saveProcess.push(customer.save())
-          });
+          })
           return Promise.all(saveProcess)
         })
         .then(() => {
@@ -27,17 +26,3 @@ db.once('open', () => {
         })
     }))
 })
-
-function sample(population, size) {
-  if (size <= 0) return []
-
-  let sampling = []
-  Array(size).fill(0).forEach(() => {
-    sampling.push(population[Math.floor(Math.random() * size)])
-  })
-
-  return sampling
-}
-
-
-

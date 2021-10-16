@@ -2,79 +2,47 @@ const express = require('express')
 const router = express.Router()
 const Product = require('../../models/product')
 const Customer = require('../../models/customer')
-const mongoose = require('mongoose')
 
 router.get('/', (req, res) => {
   return res.render('index')
 })
 
-router.get('/productList', (req, res) => {
-  let products = []
-  Product
-    .find()
-    .lean()
-    .then(ps => {
-      products = ps
-    })
-
+router.get('/productList', async (req, res) => {
+  let products = await Product.find().lean()
   res.render('productList', { products })
 })
 
-router.get('/customerList', (req, res) => {
-  Customer
-    .find()
-    .lean()
-    .then(customers => {
-      customers.forEach(customer => {
-        Product
-          //搜尋並模擬資料庫緩慢
-          .findOne({ _id: mongoose.Types.ObjectId(customer.favorite)  , $where: 'sleep(30) || true' })
-          .then(product => {
-            customer.productName = product.name
-          })
-      })
+router.get('/customerList', async (req, res) => {
+  let customers = await Customer.find().lean()
+  let products = await Product.find().lean()
 
-      //模擬其他資料邏輯處理
-      saveUserLog()
-        .then(() => {
-          res.render('customerList', { customers })
-        })
-    })
+  customers = customers.map(customer => {
+    let favoriteProduct = products.find(product => customer.favorite.equals(product._id))
+    customer.productName = favoriteProduct.name
+    return customer
+  })
+
+  //模擬其他資料邏輯處理
+  await saveUserLog()
+
+  res.render('customerList', { customers })
 })
 
-//correct
-// router.get('/productList', (req, res) => {
-//   Product
-//     .find()
-//     .lean()
-//     .then(products => {
-//       res.render('productList', { products })
-//     })
-// })
-//
-// router.get('/customerList', (req, res) => {
-//   Customer
-//     .find()
-//     .lean()
-//     .then(customers => {
-//       Product
-//         .find()
-//         .lean()
-//         .then(products => {
-//           customers.forEach(customer => {
-//             let favoriteProduct = products.find(product => customer.favorite.equals(product._id))
-//             customer.productName = favoriteProduct.name
-//           })
-//         })
-//
-//       //模擬其他資料邏輯處理
-//       saveUserLog()
-//         .then(() => {
-//           res.render('customerList', { customers })
-//         })
-//     })
-// })
 
+//case 2
+// router.get('/customerList', async (req, res) => {
+//   let customers = await Customer.find().lean()
+//
+//   for (const customer of customers) {
+//     let product = await Product.findOne({_id: customer.favorite})
+//     customer.productName = product.name
+//   }
+//
+//   //模擬其他資料邏輯處理
+//   await saveUserLog()
+//
+//   res.render('customerList', { customers })
+// })
 
 function saveUserLog () {
   return new Promise(resolve => {

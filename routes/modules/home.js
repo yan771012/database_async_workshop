@@ -27,8 +27,7 @@ router.get('/customerList', (req, res) => {
     .then(customers => {
       customers.forEach(customer => {
         Product
-          //搜尋並模擬資料庫緩慢
-          .findOne({ _id: mongoose.Types.ObjectId(customer.favorite)  , $where: 'sleep(30) || true' })
+          .findOne({ _id: mongoose.Types.ObjectId(customer.favorite) })
           .then(product => {
             customer.productName = product.name
           })

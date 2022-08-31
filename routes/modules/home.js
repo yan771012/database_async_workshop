@@ -51,28 +51,28 @@ router.get('/customerList', (req, res) => {
 //     })
 // })
 //
-router.get('/customerList', (req, res) => {
-  Customer
-    .find()
-    .lean()
-    .then(customers => {
-      Product
-        .find()
-        .lean()
-        .then(products => {
-          customers.forEach(customer => {
-            let favoriteProduct = products.find(product => customer.favorite.equals(product._id))
-            customer.productName = favoriteProduct.name
-          })
-
-          //模擬其他資料邏輯處理
-          saveUserLog()
-            .then(() => {
-              res.render('customerList', { customers })
-            })
-        })
-    })
-})
+// router.get('/customerList', (req, res) => {
+//   Customer
+//     .find()
+//     .lean()
+//     .then(customers => {
+//       Product
+//         .find()
+//         .lean()
+//         .then(products => {
+//           customers.forEach(customer => {
+//             let favoriteProduct = products.find(product => customer.favorite.equals(product._id))
+//             customer.productName = favoriteProduct.name
+//           })
+//
+//           //模擬其他資料邏輯處理
+//           saveUserLog()
+//             .then(() => {
+//               res.render('customerList', { customers })
+//             })
+//         })
+//     })
+// })
 
 
 function saveUserLog () {
